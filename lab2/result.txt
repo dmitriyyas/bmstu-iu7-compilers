@@ -1,0 +1,12 @@
+E T F
++ * ( ) a
+E -> E + T
+E -> T * F
+E -> ( E )
+E -> a
+T -> T * F
+T -> ( E )
+T -> a
+F -> ( E )
+F -> a
+
