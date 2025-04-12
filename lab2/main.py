@@ -2,8 +2,6 @@ from grammar import Grammar, reedGrammarFromFile
 
 
 INPUT_FILE_NAME = "./input.txt"
-OUTPUT_FILE_NAME = "./result.txt"
-
 
 def main():
     grammar: Grammar = reedGrammarFromFile(INPUT_FILE_NAME)

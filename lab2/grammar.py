@@ -60,10 +60,7 @@ class Grammar:
         while i < len(self.notTerminals):
             copyRightRules = self.rules[self.notTerminals[i]].copy()
             for j in range(i):
-                self.__replaceProducts(
-                    notTerminal=self.notTerminals[i],
-                    replaceableNotTerminal=self.notTerminals[j],
-                )
+                self.__replaceProducts(self.notTerminals[i], self.notTerminals[j])
             if self.__removeDirectLeftRecursion(self.notTerminals[i]):
                 i += 2
             else:
@@ -174,31 +171,29 @@ class Grammar:
             
             f.write(f"{self.start}\n")
 
-    def __replaceProducts(self, notTerminal: str, replaceableNotTerminal: str) -> None:
-        flagReplace = False
+    def __replaceProducts(self, notTerminal: str, notTerminalToReplace: str) -> None:
+        flag = False
         newRightRules = []
         rightRules = self.rules[notTerminal]
         for i in range(len(rightRules)):
-            if replaceableNotTerminal not in rightRules[i]:
+            if notTerminalToReplace not in rightRules[i]:
                 newRightRules.append(rightRules[i])
                 continue
             
-            flagReplace = True
-            j = rightRules[i].index(replaceableNotTerminal)
-            for substitutedRightRule in self.rules[replaceableNotTerminal]:
+            flag = True
+            j = rightRules[i].index(notTerminalToReplace)
+            for rightRule in self.rules[notTerminalToReplace]:
                 newRightRule = rightRules[i][:j]
-                if substitutedRightRule[0] != "Ɛ":
-                    newRightRule.extend(substitutedRightRule)
+                if rightRule[0] != "Ɛ":
+                    newRightRule.extend(rightRule)
                 newRightRule.extend(rightRules[i][j + 1:])
                 newRightRules.append(newRightRule)
         
-        if flagReplace:
+        if flag:
             self.rules[notTerminal] = newRightRules
 
     def __removeDirectLeftRecursion(self, notTerminal: str) -> bool:
-        self.rules[notTerminal].sort(
-            key=lambda rightRule: rightRule[0] != notTerminal
-        )
+        self.rules[notTerminal].sort(key=lambda rightRule: rightRule[0] != notTerminal)
         newNotTerminal = notTerminal + "'"
         rightRulesForNewNotTerminal = []
         rightRules = []
@@ -218,17 +213,15 @@ class Grammar:
         if len(rightRulesForNewNotTerminal):
             rightRulesForNewNotTerminal.append(["Ɛ"])
             indexNotTerminal = self.notTerminals.index(notTerminal)
-            self.notTerminals = \
-                self.notTerminals[:indexNotTerminal + 1] + [newNotTerminal] + \
-                self.notTerminals[indexNotTerminal + 1:]
+            self.notTerminals = self.notTerminals[:indexNotTerminal + 1] + [newNotTerminal] + self.notTerminals[indexNotTerminal + 1:]
             self.rules[newNotTerminal] = rightRulesForNewNotTerminal
             self.rules[notTerminal] = rightRules
 
-            removedFlag = True
+            flag = True
         else:
-            removedFlag = False
+            flag = False
 
-        return removedFlag
+        return flag
     
     def __printProduct(self, notTerminal: str, rightRules: list[list[str]]):
         print(f"{notTerminal} -> ", end="")
