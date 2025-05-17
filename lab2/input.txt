@@ -1,9 +1,7 @@
-E T F
-+ * ( ) a
-E -> E + T
-E -> T
-T -> T * F
-T -> F
-F -> ( E )
-F -> a
-E
+AR SL TE
+sl te
+AR -> AR SL TE
+AR -> TE
+SL -> sl
+TE -> te
+AR
