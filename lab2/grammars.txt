@@ -1,0 +1,37 @@
+E T F
++ * ( ) a
+E -> E + T
+E -> T
+T -> T * F
+T -> F
+F -> ( E )
+F -> a
+E
+
+S A
+a b c d
+S -> A a
+S -> b
+A -> A c
+A -> S d
+A -> Ɛ
+A
+
+E T F
++ - * / ( ) id
+E -> E + T
+E -> E - T
+E -> T
+T -> T * F
+T -> T / F
+T -> F
+F -> ( E ) id
+E
+
+S E
+i t e a b
+S -> i E t S
+S -> i E t S e S
+S -> a
+E -> b
+S
