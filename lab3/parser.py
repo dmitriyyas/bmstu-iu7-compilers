@@ -214,7 +214,8 @@ def parse_operator(tree: Node, lexemes: List[str]) -> bool:
     new_node = Node("\<оператор\>")
     if parse_identifier(new_node, lexemes) and \
         parse_lex(new_node, lexemes, ':=') and \
-        parse_expr(new_node, lexemes):
+        parse_expr(new_node, lexemes) and \
+        parse_lex(new_node, lexemes, ';'):
 
         tree.children.append(new_node)
         return True
@@ -224,9 +225,8 @@ def parse_operator(tree: Node, lexemes: List[str]) -> bool:
 
 def parse_operator_list_stroke(tree: Node, lexemes: List[str]) -> bool:
     new_node = Node("\<список операторов’\>")
-    if parse_lex(new_node, lexemes, ';'):
-        if parse_operator(new_node, lexemes) \
-            and parse_operator_list_stroke(new_node, lexemes):
+    if parse_operator(new_node, lexemes):
+        if parse_operator_list_stroke(new_node, lexemes):
 
             tree.children.append(new_node)
             return True
